@@ -5,7 +5,8 @@ using FluentValidation;
 
 namespace arroba.suino.webapi.Domain.Interfaces
 {
-    public interface IBaseUseCase
+    public interface IUseCase
     {
+        IList<Usuario> GetUsuarios();
     }
 }

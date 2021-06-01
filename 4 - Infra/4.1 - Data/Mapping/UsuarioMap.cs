@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace arroba.suino.webapi.infra.Mapping
 {
-    public class UsuarioMap: IEntityTypeConfiguration<Usuario>
+    public class UsuarioMap : IEntityTypeConfiguration<Usuario>
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
@@ -12,11 +12,16 @@ namespace arroba.suino.webapi.infra.Mapping
 
             builder.HasKey(prop => prop.Id);
 
+            builder.Property(prop => prop.Id)
+                .IsRequired()
+                .HasColumnName("codUsuario")
+                .HasColumnType("varchar(36)");
+
             builder.Property(prop => prop.Nome)
                 .HasConversion(prop => prop.ToString(), prop => prop)
                 .IsRequired()
-                .HasColumnName("Name")
-                .HasColumnType("varchar(100)");
+                .HasColumnName("Nome")
+                .HasColumnType("varchar(45)");
         }
     }
 }

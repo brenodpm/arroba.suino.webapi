@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arroba.suino.webapi.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arroba.suino.webapi.Domain", "2 - Domain\arroba.suino.webapi.Domain.csproj", "{36EFAD91-3088-4B5A-8547-33D2DB31CF11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arroba.suino.webapi.Service", "3 - Service\arroba.suino.webapi.Service.csproj", "{76319834-C9FF-4329-9407-6B8DAD9B2222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arroba.suino.webapi.UseCases", "3 - UseCases\arroba.suino.webapi.UseCases.csproj", "{76319834-C9FF-4329-9407-6B8DAD9B2222}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{441BA5FD-0553-4282-ABB2-A50E9C98232C}"
 EndProject
