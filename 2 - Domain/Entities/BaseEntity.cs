@@ -8,5 +8,6 @@ namespace arroba.suino.webapi.Domain.Entities
     {
         [Key]
         public virtual Guid Id { get; set; }
+        public virtual bool Ativo { get; set; }
     }
 }

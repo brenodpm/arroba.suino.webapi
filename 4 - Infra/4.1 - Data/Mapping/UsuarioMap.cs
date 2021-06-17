@@ -22,6 +22,11 @@ namespace arroba.suino.webapi.infra.Mapping
                 .IsRequired()
                 .HasColumnName("Nome")
                 .HasColumnType("varchar(45)");
+
+            builder.Property(prop => prop.Ativo)
+                .IsRequired()
+                .HasColumnName("Ativo")
+                .HasColumnType("TINYINT");
         }
     }
 }

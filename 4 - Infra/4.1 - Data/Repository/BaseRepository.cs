@@ -1,53 +1,46 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using arroba.suino.webapi.Domain.Entities;
-using arroba.suino.webapi.Domain.Interfaces;
 using arroba.suino.webapi.infra.Context;
+using arroba.suino.webapi.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace arroba.suino.webapi.infra.Repository
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly MySqlContext _mySqlContext;
+        protected readonly MySqlContext db;
 
         public BaseRepository(MySqlContext mySqlContext)
         {
-            _mySqlContext = mySqlContext;
+            db = mySqlContext;
         }
 
-        public void Insert(TEntity obj)
+        public async Task Insert(TEntity obj)
         {
-            _mySqlContext.Set<TEntity>().Add(obj);
-            _mySqlContext.SaveChanges();
+            await db.Set<TEntity>().AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(TEntity obj)
+        public async Task Update(TEntity obj)
         {
-            _mySqlContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _mySqlContext.SaveChanges();
+            db.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(Guid id)
         {
-            _mySqlContext.Set<TEntity>().Remove(Select(id));
-            _mySqlContext.SaveChanges();
-        }
+            TEntity entity = await Select(id);
+            entity.Ativo = false;
+            await Update(entity);
+         }
 
-        public IList<TEntity> Select() =>
-            _mySqlContext.Set<TEntity>().ToList();
-
-        public TEntity Select(int id) =>
-            _mySqlContext.Set<TEntity>().Find(id);
-
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TEntity Select(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IList<TEntity>> Select() =>
+            await db.Set<TEntity>().Where(t => t.Ativo).ToListAsync();
+            
+        public async Task<TEntity> Select(Guid id) =>
+            await db.Set<TEntity>().FindAsync(id);
     }
 }

@@ -1,12 +1,16 @@
-using arroba.suino.webapi.Domain.Interfaces;
+using arroba.suino.webapi.Application.Filters;
+using arroba.suino.webapi.Application.Map;
+using arroba.suino.webapi.Domain.Interfaces.UseCase;
 using arroba.suino.webapi.infra.Context;
-using arroba.suino.webapi.Usuario.UseCases;
+using arroba.suino.webapi.infra.Repository;
+using arroba.suino.webapi.Interfaces.Repository;
+using arroba.suino.webapi.Service.UseCases;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace arroba.suino.webapi.Application
@@ -20,16 +24,23 @@ namespace arroba.suino.webapi.Application
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             string dbConnectionString = Configuration.GetConnectionString("DotNetCoreMySQLAppConnection");
             services.AddDbContext<MySqlContext>(opt => opt.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString)));
 
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new AutoMapping()); });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddControllers();
 
-            services.AddScoped<IUseCase, UseCase>();
+            services.AddScoped<IUseCaseExample, UseCaseExample>();
 
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+            services.AddControllers(options =>
+                options.Filters.Add(new HttpResponseExceptionFilter()));
 
             services.AddSwaggerGen(c =>
             {
@@ -37,22 +48,13 @@ namespace arroba.suino.webapi.Application
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "arroba.suino.webapi.Application v1"));
-            }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "arroba.suino.webapi.Application v1"));
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

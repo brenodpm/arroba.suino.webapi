@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -14,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\2 - Domain\arroba.suino.webapi.Domain.csproj" />
-    <ProjectReference Include="..\3 - UseCases\arroba.suino.webapi.UseCases.csproj" />
+    <ProjectReference Include="..\3 - Service\arroba.suino.webapi.Service.csproj" />
     <ProjectReference Include="..\4 - Infra\4.2 - CrossCutting\arroba.suino.webapi.Infra.CrossCutting.csproj" />
   </ItemGroup>
 
