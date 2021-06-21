@@ -31,10 +31,10 @@ Qualquer chamada ao passar pelo ***Middleware* de autenticação** da API.
 
 ## FLUXOS ALTERNATIVOS
 ### A1 - Cliente inexistente
-1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) sem nenhuma descrição.
+1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
 ### A2 - Cliente desativado
-1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) sem nenhuma descrição.
+1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
 ### A3 - Assinatura inválida
-1 -  O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) sem nenhuma descrição.
+1 -  O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
 
 ## REGRAS DE NEGÓCIO

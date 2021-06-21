@@ -32,14 +32,17 @@ APP solicita o Login ao usuário.
 4 - O **APP** gerará um JWT [Gerar JWT] ([RN01](#RN01));
 5 - O **APP** chamará o método de *Login* da **API** ([RN02](#RN02));
 6 - O ***Middleware* de autenticação** validará o JWT [UC002];
-7 - O ***Middleware* de autenticação** validará a integridade do body recebido com o *HASH* presente na *claim body* do JWT;
-8 - O ***backend* de segurança** validará o usuário e a *HASH* da senha;
+7 - O ***Middleware* de autenticação** validará a integridade do body recebido com o *HASH* presente na *claim body* do JWT [[A1](#A1 - Body inválido)];
+8 - O ***backend* de segurança** validará o usuário e a *HASH* da senha [[A2](#A2 - Usuario ou senha inválido)];
 9 - Quando houver sessão ativa para este usuário no dispositivo informado (dados presentes no JWT), o ***backend* de segurança** desativará a sessão;
-10 - O ***backend* de segurança** criará uma nova sessão para o usuário;
+10 - O ***backend* de segurança** criará uma nova sessão para o usuário no dispositivo informado;
 11 - O ***backend* de segurança** retornará um [Access Token] ao **APP**.
 
 ## FLUXOS ALTERNATIVOS
-### A1 - 
+### A1 - Body inválido
+1 -  O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) com a descrição: O corpo da mensagem não condiz com o cabeçalho informado.
+### A2 - Usuario ou senha inválido
+1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*)  com a descrição: Usuário ou senha inválido.
 
 ## REGRAS DE NEGÓCIO
 ### RN01
