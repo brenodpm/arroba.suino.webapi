@@ -15,3 +15,9 @@ Serão utilizadas três camadas no projeto, sendo elas:
 3. **Infra:** Esta é a camada de acesso à dados;
 
 **Obs.:** Uma quarta camada existirá **Domain** que proverá padrões às demais.
+
+# Documentação
+
+## Casos de Uso
+[CASO DE USO 001 - VALIDAR JWT](./uc/uc001-validar-jwt.md)
+## Politicas
