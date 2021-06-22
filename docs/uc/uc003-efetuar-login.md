@@ -1,4 +1,4 @@
-# CASO DE USO 001 - EFETUAR LOGIN
+# CASO DE USO 003 - EFETUAR LOGIN
 ## OBJETIVO
 Gerar uma chave de acesso ([Access Token]), ao APP utilizando pelo **suinocultor** para que possa consumir as APIs do sistema.
 
@@ -31,22 +31,19 @@ APP solicita o Login ao usuário.
 3 - O **APP** usará a criptografia MD5 para gerar um *hash* da senha que será enviada na requisição no lugar da senha real;
 4 - O **APP** gerará um JWT [Gerar JWT] ([RN01](#RN01));
 5 - O **APP** chamará o método de *Login* da **API** ([RN02](#RN02));
-6 - O ***Middleware* de autenticação** validará o JWT [UC002];
-7 - O ***Middleware* de autenticação** validará a integridade do body recebido com o *HASH* presente na *claim body* do JWT [[A1](#A1 - Body inválido)];
-8 - O ***backend* de segurança** validará o usuário e a *HASH* da senha [[A2](#A2 - Usuario ou senha inválido)];
-9 - Quando houver sessão ativa para este usuário no dispositivo informado (dados presentes no JWT), o ***backend* de segurança** desativará a sessão;
-10 - O ***backend* de segurança** criará uma nova sessão para o usuário no dispositivo informado;
-11 - O ***backend* de segurança** retornará um [Access Token] ao **APP**.
+6 - O ***Middleware* de autenticação** validará o JWT [UC001];
+7 - O ***backend* de segurança** validará o usuário e a *HASH* da senha [[A1](#A1 - Usuario ou senha inválido)];
+8 - Quando houver sessão ativa para este usuário no dispositivo informado (dados presentes no JWT), o ***backend* de segurança** desativará a sessão;
+9 - O ***backend* de segurança** criará uma nova sessão para o usuário no dispositivo informado;
+10 - O ***backend* de segurança** retornará um [Access Token] ao **APP**.
 
 ## FLUXOS ALTERNATIVOS
-### A1 - Body inválido
-1 -  O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) com a descrição: O corpo da mensagem não condiz com o cabeçalho informado.
-### A2 - Usuario ou senha inválido
+### A1 - Usuario ou senha inválido
 1 -  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*)  com a descrição: Usuário ou senha inválido.
 
 ## REGRAS DE NEGÓCIO
 ### RN01
-O JWT gerado pelo **APP** para a requisição de *login* deve ser incluído no *header autorization* precedido do termo **"bearer:"** (inclui dois pontos) e a *claim access token* será suprimida nesta requisição;
+O JWT gerado pelo **APP** para a requisição de *login* deve ser incluído no *header autorization* precedido do termo **"bearer:"** (inclui dois pontos) e a *claim accessToken* será suprimida nesta requisição;
 ### RN02
 Usa-se o verbo *POST* para o login;
 
@@ -55,4 +52,4 @@ Usa-se o verbo *POST* para o login;
 
 [Gerar JWT]: <../policy/gerar-jwt.md>
 [Access Token]: <../policy/access-token.md>
-[UC002]: <./uc002-validar-jwt.md>
+[UC001]: <./uc001-validar-jwt.md>
