@@ -15,3 +15,15 @@ Serão utilizadas três camadas no projeto, sendo elas:
 3. **Infra:** Esta é a camada de acesso à dados;
 
 **Obs.:** Uma quarta camada existirá **Domain** que proverá padrões às demais.
+
+# Documentação
+
+## Casos de Uso
+- [CASO DE USO 001 - VALIDAR JWT](./uc/uc001-validar-jwt.md)
+- [CASO DE USO 002 - VALIDAR ACCESS TOKEN](./uc/uc002-validar-access-token.md)
+- [CASO DE USO 003 - EFETUAR LOGIN](./uc/uc003-efetuar-login.md)
+- [CASO DE USO 004 - Logout](./uc/uc004-logout.md)
+- [CASO DE USO 005 - REFRESH TOKEN](./uc/uc005-refresh-token.md)
+- [CASO DE USO 006 - OUTRAS REQUISIÇÕES](./uc/uc006-outras-requisicoes.md)
+## Politicas
+- [GERAR JWT](./policy/gerar-jwt.md)
