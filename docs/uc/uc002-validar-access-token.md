@@ -1,4 +1,4 @@
-# CASO DE USO 002. VALIDAR ACCESS TOKEN
+# CASO DE USO 002 - VALIDAR ACCESS TOKEN
 ## OBJETIVO
 Verificar a integridade do *Access Token* informado no JWT
 

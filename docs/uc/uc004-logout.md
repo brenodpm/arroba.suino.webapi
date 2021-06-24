@@ -1,4 +1,4 @@
-# CASO DE USO 004. Logout
+# CASO DE USO 004 - Logout
 ## OBJETIVO
 Encerrar sessão no dispositivo atual
 
