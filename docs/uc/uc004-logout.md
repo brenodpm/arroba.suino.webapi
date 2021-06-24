@@ -40,5 +40,5 @@ Suinocultor clica em Logout
 
 [Gerar JWT]: <../policy/gerar-jwt.md>
 [Access Token]: <../policy/access-token.md>
-[UC001]: <./uc001-validar-jwt.md>
+[UC001]: <uc001-validar-jwt.md>
 [UC002]: <./uc002-validar-access-token.md>
