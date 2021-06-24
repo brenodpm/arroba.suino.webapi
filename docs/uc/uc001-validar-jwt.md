@@ -1,3 +1,5 @@
+[![UC](../image/uc-seguranca.jpg)](../image/uc-seguranca.jpg)
+
 # CASO DE USO 001 - VALIDAR JWT
 ## OBJETIVO
 Verificar a integridade do JWT informado na requisição

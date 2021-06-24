@@ -24,13 +24,13 @@ Baixa
 Suinocultor chama qualquer método da API
 
 ## FLUXO PRINCIPAL
-1 - O **suinocultor** chama qualquer método da API;
-2 - O **APP** gerará um JWT [Gerar JWT];
-3 - Se o *[Access Token]* estiver faltando um dia pra vencer, será solicitado um *Refresh Token* [UC005];
-4 - O **APP** chamará o método de *Logout* da **API**;
-5 - O ***Middleware* de autenticação** validará o JWT [UC001];
-6 - O ***Middleware* de autorização** validará o *[Access Token]* [UC002];
-7 - O ***backend*** consumirá a API desejada.
+1. O **suinocultor** chama qualquer método da API;
+2. O **APP** gerará um JWT [Gerar JWT];
+3. Se o *[Access Token]* estiver faltando um dia pra vencer, será solicitado um *Refresh Token* [UC005];
+4. O **APP** chamará o método de *Logout* da **API**;
+5. O ***Middleware* de autenticação** validará o JWT [UC001];
+6. O ***Middleware* de autorização** validará o *[Access Token]* [UC002];
+7. O ***backend*** consumirá a API desejada.
 
 ## FLUXOS ALTERNATIVOS
 
