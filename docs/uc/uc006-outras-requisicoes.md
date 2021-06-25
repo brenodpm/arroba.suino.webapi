@@ -39,8 +39,8 @@ Suinocultor chama qualquer método da API
 
 [//]: # (REFERENCE LINKS)
 
-[Gerar JWT]: <../policy/gerar-jwt.md>
-[Access Token]: <../policy/access-token.md>
-[UC001]: <./uc001-validar-jwt.md>
-[UC002]: <./uc002-validar-access-token.md>
-[UC005]: <./uc005-refresh-token.md>
+[Gerar JWT]: <../policy/gerar-jwt.html>
+[Access Token]: <../policy/access-token.html>
+[UC001]: <./uc001-validar-jwt.html>
+[UC002]: <./uc002-validar-access-token.html>
+[UC005]: <./uc005-refresh-token.html>

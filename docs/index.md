@@ -19,11 +19,11 @@ Serão utilizadas três camadas no projeto, sendo elas:
 # Documentação
 
 ## Casos de Uso
-- [CASO DE USO 001 - VALIDAR JWT](./uc/uc001-validar-jwt.md)
-- [CASO DE USO 002 - VALIDAR ACCESS TOKEN](./uc/uc002-validar-access-token.md)
-- [CASO DE USO 003 - EFETUAR LOGIN](./uc/uc003-efetuar-login.md)
-- [CASO DE USO 004 - Logout](./uc/uc004-logout.md)
-- [CASO DE USO 005 - REFRESH TOKEN](./uc/uc005-refresh-token.md)
-- [CASO DE USO 006 - OUTRAS REQUISIÇÕES](./uc/uc006-outras-requisicoes.md)
+- [CASO DE USO 001 - VALIDAR JWT](./uc/uc001-validar-jwt.html)
+- [CASO DE USO 002 - VALIDAR ACCESS TOKEN](./uc/uc002-validar-access-token.html)
+- [CASO DE USO 003 - EFETUAR LOGIN](./uc/uc003-efetuar-login.html)
+- [CASO DE USO 004 - Logout](./uc/uc004-logout.html)
+- [CASO DE USO 005 - REFRESH TOKEN](./uc/uc005-refresh-token.html)
+- [CASO DE USO 006 - OUTRAS REQUISIÇÕES](./uc/uc006-outras-requisicoes.html)
 ## Politicas
-- [GERAR JWT](./policy/gerar-jwt.md)
+- [GERAR JWT](./policy/gerar-jwt.html)

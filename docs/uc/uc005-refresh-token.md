@@ -44,7 +44,7 @@ Quando faltar um dia para a sessão vencer
 
 [//]: # (REFERENCE LINKS)
 
-[Gerar JWT]: <../policy/gerar-jwt.md>
-[Access Token]: <../policy/access-token.md>
-[UC001]: <./uc001-validar-jwt.md>
-[UC002]: <./uc002-validar-access-token.md>
+[Gerar JWT]: <../policy/gerar-jwt.html>
+[Access Token]: <../policy/access-token.html>
+[UC001]: <./uc001-validar-jwt.html>
+[UC002]: <./uc002-validar-access-token.html>
