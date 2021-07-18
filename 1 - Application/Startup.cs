@@ -1,10 +1,6 @@
 using arroba.suino.webapi.Application.Filters;
 using arroba.suino.webapi.Application.Map;
-using arroba.suino.webapi.Domain.Interfaces.UseCase;
 using arroba.suino.webapi.infra.Context;
-using arroba.suino.webapi.infra.Repository;
-using arroba.suino.webapi.Interfaces.Repository;
-using arroba.suino.webapi.Service.UseCases;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,10 +30,7 @@ namespace arroba.suino.webapi.Application
             services.AddSingleton(mapper);
 
             services.AddControllers();
-
-            services.AddScoped<IUseCaseExample, UseCaseExample>();
-
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddServices();
 
             services.AddControllers(options =>
                 options.Filters.Add(new HttpResponseExceptionFilter()));
@@ -52,9 +45,11 @@ namespace arroba.suino.webapi.Application
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "arroba.suino.webapi.Application v1"));
+           
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

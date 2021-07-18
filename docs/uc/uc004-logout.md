@@ -1,4 +1,4 @@
-# CASO DE USO 004 - Logout
+# CASO DE USO 004 - LOGOUT
 ## OBJETIVO
 Encerrar sessão no dispositivo atual
 
@@ -38,7 +38,7 @@ Suinocultor clica em Logout
 
 [//]: # (REFERENCE LINKS)
 
-[Gerar JWT]: <../policy/gerar-jwt.md>
-[Access Token]: <../policy/access-token.md>
-[UC001]: <uc001-validar-jwt.md>
-[UC002]: <./uc002-validar-access-token.md>
+[Gerar JWT]: <../policy/gerar-jwt.html>
+[Access Token]: <../policy/access-token.html>
+[UC001]: <./uc001-validar-jwt.html>
+[UC002]: <./uc002-validar-access-token.html>
