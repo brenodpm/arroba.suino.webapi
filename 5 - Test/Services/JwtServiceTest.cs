@@ -22,14 +22,14 @@ namespace arroba.suino.webapi.test.Services
         {
             Cliente cliente = new Cliente
             {
-                ApiKey = Guid.NewGuid().ToString(),
+                ApiKey = Guid.NewGuid(),
                 Nome = "Cliente",
-                ApiSecret = Guid.NewGuid().ToString(),
+                ApiSecret = Guid.NewGuid(),
                 Ativo = true,
-                CodDesenvolvedor = Guid.NewGuid().ToString()
+                CodDesenvolvedor = Guid.NewGuid()
             };
-            string apikey = cliente.ApiKey;
-            string secret = cliente.ApiSecret;
+            Guid apikey = cliente.ApiKey;
+            Guid secret = cliente.ApiSecret;
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -39,14 +39,14 @@ namespace arroba.suino.webapi.test.Services
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            jwtService.ValidarJwtEBody(header, body);
+            jwtService.ValidarJwtComBody(header, body);
         }
 
         [Fact]
         public void TJWT_ClienteInexistente()
         {
-            string apikey = Guid.NewGuid().ToString();
-            string secret = Guid.NewGuid().ToString();
+            Guid apikey = Guid.NewGuid();
+            Guid secret = Guid.NewGuid();
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -56,7 +56,7 @@ namespace arroba.suino.webapi.test.Services
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
+            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
@@ -66,14 +66,14 @@ namespace arroba.suino.webapi.test.Services
         {
             Cliente cliente = new Cliente
             {
-                ApiKey = Guid.NewGuid().ToString(),
+                ApiKey = Guid.NewGuid(),
                 Nome = "Cliente",
-                ApiSecret = Guid.NewGuid().ToString(),
+                ApiSecret = Guid.NewGuid(),
                 Ativo = false,
-                CodDesenvolvedor = Guid.NewGuid().ToString()
+                CodDesenvolvedor = Guid.NewGuid()
             };
-            string apikey = cliente.ApiKey;
-            string secret = cliente.ApiSecret;
+            Guid apikey = cliente.ApiKey;
+            Guid secret = cliente.ApiSecret;
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -83,7 +83,7 @@ namespace arroba.suino.webapi.test.Services
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
+            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
@@ -93,14 +93,14 @@ namespace arroba.suino.webapi.test.Services
         {
             Cliente cliente = new Cliente
             {
-                ApiKey = Guid.NewGuid().ToString(),
+                ApiKey = Guid.NewGuid(),
                 Nome = "Cliente",
-                ApiSecret = Guid.NewGuid().ToString(),
+                ApiSecret = Guid.NewGuid(),
                 Ativo = true,
-                CodDesenvolvedor = Guid.NewGuid().ToString()
+                CodDesenvolvedor = Guid.NewGuid()
             };
-            string apikey = cliente.ApiKey;
-            string secret = Guid.NewGuid().ToString();
+            Guid apikey = cliente.ApiKey;
+            Guid secret = Guid.NewGuid();
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -110,7 +110,7 @@ namespace arroba.suino.webapi.test.Services
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
+            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
@@ -120,14 +120,14 @@ namespace arroba.suino.webapi.test.Services
         {
             Cliente cliente = new Cliente
             {
-                ApiKey = Guid.NewGuid().ToString(),
+                ApiKey = Guid.NewGuid(),
                 Nome = "Cliente",
-                ApiSecret = Guid.NewGuid().ToString(),
+                ApiSecret = Guid.NewGuid(),
                 Ativo = true,
-                CodDesenvolvedor = Guid.NewGuid().ToString()
+                CodDesenvolvedor = Guid.NewGuid()
             };
-            string apikey = cliente.ApiKey;
-            string secret = cliente.ApiSecret;
+            Guid apikey = cliente.ApiKey;
+            Guid secret = cliente.ApiSecret;
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -137,12 +137,12 @@ namespace arroba.suino.webapi.test.Services
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
+            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("O corpo da mensagem não condiz com o cabeçalho informado", atual.Message);
         }
 
-        public static string GenerateToken(string apikey, string secret, string accessToken, string body)
+        public static string GenerateToken(Guid apikey, Guid secret, string accessToken, string body)
         {
 
             StringBuilder sbBody = new StringBuilder();
@@ -160,10 +160,10 @@ namespace arroba.suino.webapi.test.Services
 
 
 
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Encoding.ASCII.GetBytes(secret.ToString());
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = apikey,
+                Issuer = apikey.ToString(),
                 IssuedAt = DateTime.Now,
                 Expires = DateTime.UtcNow.AddSeconds(30),
                 Claims = new Dictionary<string, object>{
