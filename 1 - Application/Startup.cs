@@ -1,10 +1,6 @@
 using arroba.suino.webapi.Application.Filters;
 using arroba.suino.webapi.Application.Map;
-using arroba.suino.webapi.Domain.Interfaces.UseCase;
 using arroba.suino.webapi.infra.Context;
-using arroba.suino.webapi.infra.Repository;
-using arroba.suino.webapi.Interfaces.Repository;
-using arroba.suino.webapi.Service.UseCases;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

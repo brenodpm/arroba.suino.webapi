@@ -5,6 +5,11 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Xunit;
 using Moq;
+using arroba.suino.webapi.Interfaces.Repository;
+using arroba.suino.webapi.Domain.Entities;
+using arroba.suino.webapi.Interfaces.UseCase;
+using arroba.suino.webapi.Service.UseCases;
+using arroba.suino.webapi.Domain.Exceptions;
 
 namespace arroba.suino.webapi.test.Services
 {
@@ -41,7 +46,7 @@ namespace arroba.suino.webapi.test.Services
         public void TJWT_ClienteInexistente()
         {
             string apikey = Guid.NewGuid().ToString();
-            string secret = cliente.ApiSecret;
+            string secret = Guid.NewGuid().ToString();
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
@@ -53,7 +58,7 @@ namespace arroba.suino.webapi.test.Services
 
             JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
 
-            Assert.Equal("Terminal de acesso inválido", atual.message);
+            Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
@@ -80,7 +85,7 @@ namespace arroba.suino.webapi.test.Services
 
             JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
 
-            Assert.Equal("Terminal de acesso inválido", atual.message);
+            Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
@@ -107,7 +112,7 @@ namespace arroba.suino.webapi.test.Services
 
             JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
 
-            Assert.Equal("Terminal de acesso inválido", atual.message);
+            Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
@@ -134,7 +139,7 @@ namespace arroba.suino.webapi.test.Services
 
             JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtEBody(header, body));
 
-            Assert.Equal("O corpo da mensagem não condiz com o cabeçalho informado", atual.message);
+            Assert.Equal("O corpo da mensagem não condiz com o cabeçalho informado", atual.Message);
         }
 
         public static string GenerateToken(string apikey, string secret, string accessToken, string body)
