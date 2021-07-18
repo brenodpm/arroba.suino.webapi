@@ -34,10 +34,7 @@ namespace arroba.suino.webapi.Application
             services.AddSingleton(mapper);
 
             services.AddControllers();
-
-            services.AddScoped<IUseCaseExample, UseCaseExample>();
-
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddServices();
 
             services.AddControllers(options =>
                 options.Filters.Add(new HttpResponseExceptionFilter()));
@@ -52,9 +49,11 @@ namespace arroba.suino.webapi.Application
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "arroba.suino.webapi.Application v1"));
+           
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
