@@ -10,6 +10,7 @@ using arroba.suino.webapi.Domain.Entities;
 using arroba.suino.webapi.Interfaces.UseCase;
 using arroba.suino.webapi.Service.UseCases;
 using arroba.suino.webapi.Domain.Exceptions;
+using System.Threading.Tasks;
 
 namespace arroba.suino.webapi.test.Service
 {
@@ -18,7 +19,7 @@ namespace arroba.suino.webapi.test.Service
         private readonly Mock<IClienteRepository> clienteMock = new Mock<IClienteRepository>();
 
         [Fact]
-        public void JWT_Valido()
+        public async Task JWT_Valido()
         {
             Cliente cliente = new Cliente
             {
@@ -33,36 +34,36 @@ namespace arroba.suino.webapi.test.Service
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
-            clienteMock.Setup(c => c.GetByApiKey(apikey)).Returns(cliente);
+            clienteMock.Setup(c => c.GetByApiKey(apikey)).ReturnsAsync(cliente);
 
             string header = GenerateToken(apikey, secret, accessToken, body);
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            jwtService.ValidarJwtComBody(header, body);
+            await jwtService.ValidarJwtComBody(header, body);
         }
 
         [Fact]
-        public void JWT_ClienteInexistente()
+        public async Task JWT_ClienteInexistente()
         {
             Guid apikey = Guid.NewGuid();
             Guid secret = Guid.NewGuid();
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
-            clienteMock.Setup(c => c.GetByApiKey(apikey)).Returns<Cliente>(null);
+            clienteMock.Setup(c => c.GetByApiKey(apikey)).ReturnsAsync((Cliente)null);
 
             string header = GenerateToken(apikey, secret, accessToken, body);
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
+            JwtServiceException atual = await Assert.ThrowsAsync<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
-        public void JWT_ClienteDesativado()
+        public async Task JWT_ClienteDesativado()
         {
             Cliente cliente = new Cliente
             {
@@ -77,19 +78,19 @@ namespace arroba.suino.webapi.test.Service
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
-            clienteMock.Setup(c => c.GetByApiKey(apikey)).Returns(cliente);
+            clienteMock.Setup(c => c.GetByApiKey(apikey)).ReturnsAsync(cliente);
 
             string header = GenerateToken(apikey, secret, accessToken, body);
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
+            JwtServiceException atual = await Assert.ThrowsAsync<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
-        public void JWT_AssinaturaInvalida()
+        public async Task JWT_AssinaturaInvalida()
         {
             Cliente cliente = new Cliente
             {
@@ -104,19 +105,19 @@ namespace arroba.suino.webapi.test.Service
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
-            clienteMock.Setup(c => c.GetByApiKey(apikey)).Returns(cliente);
+            clienteMock.Setup(c => c.GetByApiKey(apikey)).ReturnsAsync(cliente);
 
             string header = GenerateToken(apikey, secret, accessToken, body);
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
+            JwtServiceException atual = await Assert.ThrowsAsync<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("Terminal de acesso inválido", atual.Message);
         }
 
         [Fact]
-        public void JWT_BodyInvalido()
+        public async Task JWT_BodyInvalido()
         {
             Cliente cliente = new Cliente
             {
@@ -131,13 +132,13 @@ namespace arroba.suino.webapi.test.Service
             string accessToken = Guid.NewGuid().ToString();
             string body = "{\"deu\":\"certo\"}";
 
-            clienteMock.Setup(c => c.GetByApiKey(apikey)).Returns(cliente);
+            clienteMock.Setup(c => c.GetByApiKey(apikey)).ReturnsAsync(cliente);
 
             string header = GenerateToken(apikey, secret, accessToken, "{\"deu\":\"errado\"}");
 
             IJwtService jwtService = new JwtService(clienteMock.Object);
 
-            JwtServiceException atual = Assert.Throws<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
+            JwtServiceException atual = await Assert.ThrowsAsync<JwtServiceException>(() => jwtService.ValidarJwtComBody(header, body));
 
             Assert.Equal("O corpo da mensagem não condiz com o cabeçalho informado", atual.Message);
         }

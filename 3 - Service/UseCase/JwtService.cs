@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using arroba.suino.webapi.Domain.Entities;
 using arroba.suino.webapi.Domain.Exceptions;
 using arroba.suino.webapi.Interfaces.Repository;
@@ -24,14 +25,14 @@ namespace arroba.suino.webapi.Service.UseCases
             this.clienteRepository = clienteRepository;
         }
 
-        public void ValidarJwtComBody(string token, string body)
+        public async Task ValidarJwtComBody(string token, string body)
         {
             if (token == null)
             {
                 throw new JwtServiceException(JWT_NAO_INFORMADO);
             }
 
-            ValidarAssinatura(token);
+            await ValidarAssinatura(token);
             ValidarBody(token, body);
         }
 
@@ -54,9 +55,9 @@ namespace arroba.suino.webapi.Service.UseCases
             }
         }
 
-        private void ValidarAssinatura(string token)
+        private async Task ValidarAssinatura(string token)
         {
-            Cliente cliente = BuscarCliente(token);
+            Cliente cliente = await BuscarCliente(token);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(cliente.ApiSecret.ToString());
@@ -76,11 +77,11 @@ namespace arroba.suino.webapi.Service.UseCases
             }
         }
 
-        private Cliente BuscarCliente(string token)
+        private async Task<Cliente> BuscarCliente(string token)
         {
             Guid apikey = ExtrairApiKey(token);
 
-            Cliente cliente = clienteRepository.GetByApiKey(apikey);
+            Cliente cliente = await clienteRepository.GetByApiKey(apikey);
 
             if (cliente == null)
             {

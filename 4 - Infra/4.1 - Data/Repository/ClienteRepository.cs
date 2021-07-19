@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using arroba.suino.webapi.Domain.Entities;
 using arroba.suino.webapi.infra.Context;
 using arroba.suino.webapi.Interfaces.Repository;
@@ -14,7 +15,7 @@ namespace arroba.suino.webapi.infra.Repository
             this.context = context;
         }
 
-        public Cliente GetByApiKey(Guid apikey)
+        public async Task<Cliente> GetByApiKey(Guid apikey)
         {
             return context.Clientes.Find(apikey);
         }

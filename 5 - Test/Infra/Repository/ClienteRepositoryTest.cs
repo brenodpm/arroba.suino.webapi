@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using arroba.suino.webapi.Domain.Entities;
 using arroba.suino.webapi.infra.Context;
 using arroba.suino.webapi.infra.Repository;
@@ -11,7 +12,7 @@ namespace arroba.suino.webapi.test.Repository
     public class ClienteRepositoryTest
     {
         [Fact]
-        public void GetByApiKey()
+        public async Task GetByApiKey()
         {
             Cliente esperado = new Cliente
             {
@@ -39,7 +40,7 @@ namespace arroba.suino.webapi.test.Repository
             {
 
                 IClienteRepository repository = new ClienteRepository(context);
-                Cliente atual = repository.GetByApiKey(esperado.ApiKey);
+                Cliente atual = await repository.GetByApiKey(esperado.ApiKey);
 
                 Assert.NotNull(atual);
                 Assert.Equal(esperado.ApiKey, atual.ApiKey);
@@ -52,7 +53,7 @@ namespace arroba.suino.webapi.test.Repository
 
 
         [Fact]
-        public void GetByApiKey_NaoEncontrado()
+        public async Task GetByApiKey_NaoEncontrado()
         {
             var options = new DbContextOptionsBuilder<MySqlContext>()
                         .UseInMemoryDatabase(databaseName: "MySqlContext")
@@ -64,7 +65,7 @@ namespace arroba.suino.webapi.test.Repository
             {
 
                 IClienteRepository repository = new ClienteRepository(context);
-                Cliente atual = repository.GetByApiKey(Guid.NewGuid());
+                Cliente atual = await repository.GetByApiKey(Guid.NewGuid());
 
                 Assert.Null(atual);
             }

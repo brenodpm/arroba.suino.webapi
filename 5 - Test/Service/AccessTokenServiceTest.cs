@@ -1,7 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Threading.Tasks;
+using arroba.suino.webapi.Domain.Entities;
+using arroba.suino.webapi.Domain.Exceptions;
+using arroba.suino.webapi.Interfaces.Repository;
+using arroba.suino.webapi.Interfaces.UseCase;
+using arroba.suino.webapi.Service.UseCase;
 using Microsoft.IdentityModel.Tokens;
+using Moq;
 using Xunit;
 
 namespace arroba.suino.webapi.test.Service
@@ -10,16 +18,16 @@ namespace arroba.suino.webapi.test.Service
     {
         private readonly Mock<ISessaoRepository> sessaoRepository = new Mock<ISessaoRepository>();
         private readonly Mock<IEmpresaRepository> empresaRepository = new Mock<IEmpresaRepository>();
-        private readonly Mock<IGrupoRepository> empresaRepository = new Mock<IGrupoRepository>();
+        private readonly Mock<IGrupoRepository> grupoRepository = new Mock<IGrupoRepository>();
 
 
         [Fact]
-        public void AccessToken_Valido()
+        public async Task AccessToken_Valido()
         {
             String claimExigida = "claim";
             Empresa empresa = new Empresa
             {
-                CodEmpresa = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Ativo = true,
                 NomeEmpresa = "Nome da empresa",
                 Security = Guid.NewGuid(),
@@ -30,19 +38,19 @@ namespace arroba.suino.webapi.test.Service
 
             Grupo grupo = new Grupo
             {
-                CodGrupo = Guid.NewGuid(),
-                CodEmpresa = empresa.CodEmpresa,
+                Id = Guid.NewGuid(),
+                CodEmpresa = empresa.Id,
                 NomeGrupo = "Nome grupo",
                 Ativo = true,
-                Permissoes = $"[\"{ claimExigida }\"]"
+                Permissoes = new List<string> { claimExigida }
             };
 
             Sessao sessao = new Sessao
             {
-                CodSessao = Guid.NewGuid(),
-                CodEmpresa = empresa.CodEmpresa,
+                Id = Guid.NewGuid(),
+                CodEmpresa = empresa.Id,
                 CodUsuario = Guid.NewGuid(),
-                CodGrupo = grupo.CodGrupo,
+                CodGrupo = grupo.Id,
                 ApiKey = Guid.NewGuid(),
                 Ativo = true,
                 PrimeiroAcesso = DateTime.Now,
@@ -51,18 +59,18 @@ namespace arroba.suino.webapi.test.Service
                 Localizacao = ""
             };
 
-            string accessToken = GenerateToken(sessao.CodSessao, empresa.Security);
+            string accessToken = GenerateToken(sessao.Id, empresa.Security);
 
-            sessaoRepository.Setup(c => c.GetById(sessao.CodSessao)).Returns(sessao);
-            empresaRepository.Setup(c => c.GetById(empresa.CodEmpresa)).Returns(empresa);
-            grupoRepository.Setup(c => c.GetById(grupo.CodGrupo)).Returns(grupo);
+            sessaoRepository.Setup(c => c.Select(sessao.Id)).ReturnsAsync(sessao);
+            empresaRepository.Setup(c => c.Select(empresa.Id)).ReturnsAsync(empresa);
+            grupoRepository.Setup(c => c.Select(grupo.Id)).ReturnsAsync(grupo);
 
-            IAccessTokenServiceTest service = new AccessTokenServiceTest();
-            service.Validar(accessToken, claimExigida);
+            IAccessTokenService service = new AccessTokenService(sessaoRepository.Object, empresaRepository.Object, grupoRepository.Object);
+            await service.Validar(accessToken, claimExigida);
         }
 
         [Fact]
-        public void SessaoInesistente()
+        public async Task SessaoInesistente()
         {
             String claimExigida = "claim";
             Guid sessao = default;
@@ -70,22 +78,22 @@ namespace arroba.suino.webapi.test.Service
 
             string accessToken = GenerateToken(sessao, security);
 
-            sessaoRepository.Setup(c => c.GetById(sessao)).Returns<Sessao>(null);
+            sessaoRepository.Setup(c => c.Select(sessao)).ReturnsAsync((Sessao)null);
 
-            IAccessTokenServiceTest service = new AccessTokenServiceTest();
-            
-            AccessTokenServiceException atual = Assert.Throws<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
+            IAccessTokenService service = new AccessTokenService(sessaoRepository.Object, empresaRepository.Object, grupoRepository.Object);
+
+            AccessTokenServiceException atual = await Assert.ThrowsAsync<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
 
             Assert.Equal("Sessão expirada", atual.Message);
         }
 
         [Fact]
-        public void SessaoDesativada()
+        public async Task SessaoDesativada()
         {
             String claimExigida = "claim";
             Sessao sessao = new Sessao
             {
-                CodSessao = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 CodEmpresa = Guid.NewGuid(),
                 CodUsuario = Guid.NewGuid(),
                 CodGrupo = Guid.NewGuid(),
@@ -97,24 +105,24 @@ namespace arroba.suino.webapi.test.Service
                 Localizacao = ""
             };
 
-            string accessToken = GenerateToken(sessao.CodSessao, Guid.NewGuid());
+            string accessToken = GenerateToken(sessao.Id, Guid.NewGuid());
 
-            sessaoRepository.Setup(c => c.GetById(sessao.CodSessao)).Returns(sessao);
+            sessaoRepository.Setup(c => c.Select(sessao.Id)).ReturnsAsync(sessao);
 
-            IAccessTokenServiceTest service = new AccessTokenServiceTest();
-            
-            AccessTokenServiceException atual = Assert.Throws<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
+            IAccessTokenService service = new AccessTokenService(sessaoRepository.Object, empresaRepository.Object, grupoRepository.Object);
+
+            AccessTokenServiceException atual = await Assert.ThrowsAsync<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
 
             Assert.Equal("Sessão expirada", atual.Message);
         }
 
         [Fact]
-        public void AssinaturaInvalida()
+        public async Task AssinaturaInvalida()
         {
             String claimExigida = "claim";
             Empresa empresa = new Empresa
             {
-                CodEmpresa = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Ativo = true,
                 NomeEmpresa = "Nome da empresa",
                 Security = Guid.NewGuid(),
@@ -125,10 +133,10 @@ namespace arroba.suino.webapi.test.Service
 
             Sessao sessao = new Sessao
             {
-                CodSessao = Guid.NewGuid(),
-                CodEmpresa = empresa.CodEmpresa,
+                Id = Guid.NewGuid(),
+                CodEmpresa = empresa.Id,
                 CodUsuario = Guid.NewGuid(),
-                CodGrupo = grupo.CodGrupo,
+                CodGrupo = Guid.NewGuid(),
                 ApiKey = Guid.NewGuid(),
                 Ativo = true,
                 PrimeiroAcesso = DateTime.Now,
@@ -137,26 +145,25 @@ namespace arroba.suino.webapi.test.Service
                 Localizacao = ""
             };
 
-            string accessToken = GenerateToken(sessao.CodSessao, Guid.NewGuid());
+            string accessToken = GenerateToken(sessao.Id, Guid.NewGuid());
 
-            sessaoRepository.Setup(c => c.GetById(sessao.CodSessao)).Returns(sessao);
-            empresaRepository.Setup(c => c.GetById(empresa.CodEmpresa)).Returns(empresa);
-            grupoRepository.Setup(c => c.GetById(grupo.CodGrupo)).Returns(grupo);
+            sessaoRepository.Setup(c => c.Select(sessao.Id)).ReturnsAsync(sessao);
+            empresaRepository.Setup(c => c.Select(empresa.Id)).ReturnsAsync(empresa);
 
-            IAccessTokenServiceTest service = new AccessTokenServiceTest();
-            
-            AccessTokenServiceException atual = Assert.Throws<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
+            IAccessTokenService service = new AccessTokenService(sessaoRepository.Object, empresaRepository.Object, grupoRepository.Object);
+
+            AccessTokenServiceException atual = await Assert.ThrowsAsync<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
 
             Assert.Equal("Sessão expirada", atual.Message);
         }
 
         [Fact]
-        public void ClaimNaoEncontrada()
+        public async Task ClaimNaoEncontrada()
         {
             String claimExigida = "claim";
             Empresa empresa = new Empresa
             {
-                CodEmpresa = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Ativo = true,
                 NomeEmpresa = "Nome da empresa",
                 Security = Guid.NewGuid(),
@@ -167,19 +174,19 @@ namespace arroba.suino.webapi.test.Service
 
             Grupo grupo = new Grupo
             {
-                CodGrupo = Guid.NewGuid(),
-                CodEmpresa = empresa.CodEmpresa,
+                Id = Guid.NewGuid(),
+                CodEmpresa = empresa.Id,
                 NomeGrupo = "Nome grupo",
                 Ativo = true,
-                Permissoes = "[]"
+                Permissoes = new List<string>()
             };
 
             Sessao sessao = new Sessao
             {
-                CodSessao = Guid.NewGuid(),
-                CodEmpresa = empresa.CodEmpresa,
+                Id = Guid.NewGuid(),
+                CodEmpresa = empresa.Id,
                 CodUsuario = Guid.NewGuid(),
-                CodGrupo = grupo.CodGrupo,
+                CodGrupo = grupo.Id,
                 ApiKey = Guid.NewGuid(),
                 Ativo = true,
                 PrimeiroAcesso = DateTime.Now,
@@ -188,15 +195,15 @@ namespace arroba.suino.webapi.test.Service
                 Localizacao = ""
             };
 
-            string accessToken = GenerateToken(sessao.CodSessao, empresa.Security);
+            string accessToken = GenerateToken(sessao.Id, empresa.Security);
 
-            sessaoRepository.Setup(c => c.GetById(sessao.CodSessao)).Returns(sessao);
-            empresaRepository.Setup(c => c.GetById(empresa.CodEmpresa)).Returns(empresa);
-            grupoRepository.Setup(c => c.GetById(grupo.CodGrupo)).Returns(grupo);
+            sessaoRepository.Setup(c => c.Select(sessao.Id)).ReturnsAsync(sessao);
+            empresaRepository.Setup(c => c.Select(empresa.Id)).ReturnsAsync(empresa);
+            grupoRepository.Setup(c => c.Select(grupo.Id)).ReturnsAsync(grupo);
 
-            IAccessTokenServiceTest service = new AccessTokenServiceTest();
-            
-            AccessTokenServiceException atual = Assert.Throws<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
+            IAccessTokenService service = new AccessTokenService(sessaoRepository.Object, empresaRepository.Object, grupoRepository.Object);
+
+            AccessTokenServiceException atual = await Assert.ThrowsAsync<AccessTokenServiceException>(() => service.Validar(accessToken, claimExigida));
 
             Assert.Equal("", atual.Message);
         }

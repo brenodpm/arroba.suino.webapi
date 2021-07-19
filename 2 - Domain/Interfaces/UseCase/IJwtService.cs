@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace arroba.suino.webapi.Interfaces.UseCase
 {
     public interface IJwtService
     {
-        void ValidarJwtComBody(string token, string body);
+        Task ValidarJwtComBody(string token, string body);
     }
 }
