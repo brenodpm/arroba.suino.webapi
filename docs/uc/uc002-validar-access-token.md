@@ -1,3 +1,5 @@
+[![UC](../image/uc-seguranca.jpg)](../image/uc-seguranca.jpg)
+
 # CASO DE USO 002 - VALIDAR ACCESS TOKEN
 ## OBJETIVO
 Verificar a integridade do *Access Token* informado no JWT
