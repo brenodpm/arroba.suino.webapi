@@ -34,10 +34,13 @@ Qualquer chamada ao passar pelo ***Middleware* de autenticação** da API.
 ## FLUXOS ALTERNATIVOS
 ### A1 - Cliente inexistente
 1.  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
+
 ### A2 - Cliente desativado
 1.  O ***backend* de segurança** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
+
 ### A3 - Assinatura inválida
 1. O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) com a descrição: Terminal de acesso inválido.
+
 ### A4 - Body inválido
 1. O ***Middleware* de autenticação** retorna o *status code* **401** (*Unauthorized*) com a descrição: O corpo da mensagem não condiz com o cabeçalho informado.
 

@@ -18,7 +18,7 @@ namespace arroba.suino.webapi.test.Service
         private readonly Mock<IClienteRepository> clienteMock = new Mock<IClienteRepository>();
 
         [Fact]
-        public void TJWT_Valido()
+        public void JWT_Valido()
         {
             Cliente cliente = new Cliente
             {
@@ -43,7 +43,7 @@ namespace arroba.suino.webapi.test.Service
         }
 
         [Fact]
-        public void TJWT_ClienteInexistente()
+        public void JWT_ClienteInexistente()
         {
             Guid apikey = Guid.NewGuid();
             Guid secret = Guid.NewGuid();
@@ -62,7 +62,7 @@ namespace arroba.suino.webapi.test.Service
         }
 
         [Fact]
-        public void TJWT_ClienteDesativado()
+        public void JWT_ClienteDesativado()
         {
             Cliente cliente = new Cliente
             {
@@ -89,7 +89,7 @@ namespace arroba.suino.webapi.test.Service
         }
 
         [Fact]
-        public void TJWT_AssinaturaInvalida()
+        public void JWT_AssinaturaInvalida()
         {
             Cliente cliente = new Cliente
             {
@@ -116,7 +116,7 @@ namespace arroba.suino.webapi.test.Service
         }
 
         [Fact]
-        public void TJWT_BodyInvalido()
+        public void JWT_BodyInvalido()
         {
             Cliente cliente = new Cliente
             {
@@ -176,6 +176,5 @@ namespace arroba.suino.webapi.test.Service
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
     }
 }
