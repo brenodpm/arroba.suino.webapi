@@ -11,7 +11,7 @@ using arroba.suino.webapi.Interfaces.UseCase;
 using arroba.suino.webapi.Service.UseCases;
 using arroba.suino.webapi.Domain.Exceptions;
 
-namespace arroba.suino.webapi.test.Services
+namespace arroba.suino.webapi.test.Service
 {
     public class JwtServiceTest
     {
